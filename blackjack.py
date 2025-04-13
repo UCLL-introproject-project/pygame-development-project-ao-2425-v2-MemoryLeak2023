@@ -46,3 +46,10 @@ def draw_scores(player, dealer):
     if revael_dealer:
         screen.blit(font.render(f'Score[{dealer}]', True, 'white'), (350, 100))
 
+# Toon de kaarten op het scherm
+def draw_cards(player, dealer, reveal):
+    for i in range(len(player)): #Deze lus loopt over alle kaarten die de speler in zijn hand heeft. i is de index van de kaart.
+        pygame.draw.rect(screen, 'white', [70 + (70*i), 460+(5*i), 120, 220], 0, 5) #Teken een witte rechthoek als kaart (de “kaartachtergrond”)
+        screen.blit(font.render(player[i], True, 'black'), (75+70*i, 465+5*i)) #Tekst van de kaart bovenaan tonen
+        screen.blit(font.render(player[i], True, 'black'), (75+70*i, 635+5*i))
+        pygame.draw.rect(screen, 'red', [70+(70*i), 460 + (5*i), 120,220], 5,5) #Teken een rode rand rond de kaart
