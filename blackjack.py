@@ -53,3 +53,14 @@ def draw_cards(player, dealer, reveal):
         screen.blit(font.render(player[i], True, 'black'), (75+70*i, 465+5*i)) #Tekst van de kaart bovenaan tonen
         screen.blit(font.render(player[i], True, 'black'), (75+70*i, 635+5*i))
         pygame.draw.rect(screen, 'red', [70+(70*i), 460 + (5*i), 120,220], 5,5) #Teken een rode rand rond de kaart
+
+    # Als de speler nog niet klaar is met zijn beurt, verbergt de dealer 1 kaart
+    for i in range(len(dealer)): #e loopt over alle kaarten van de dealer, net zoals je bij de speler doet.
+        pygame.draw.rect(screen, 'white', [70+(70*i), 160 + (5*i), 120, 220], 0, 5)
+        if i!=0 or reveal: #i != 0: dus alle kaarten behalve de eerste worden normaal weergegeven. Verberg de eerste kaart tenzij reveal == True
+            screen.blit(font.render(dealer[i], True, 'black'), (75+70*i, 165+5*i))
+            screen.blit(font.render(dealer[i], True, 'black'), (75+70*i, 335+5*i))
+        else:
+            screen.blit(font.render('???', True, 'black'), (75+70*i, 165+5*i)) #Hier wordt de kaart anoniem gemaakt totdat reveal op True staat.
+            screen.blit(font.render('???', True, 'black'), (75+70*i, 335+5*i))
+        pygame.draw.rect(screen, 'blue', [70+(70*i), 160+(5*i), 120,220], 5,5) #Een blauwe rand i.p.v. rood, zodat je visueel onderscheid maakt tussen speler en dealer.
