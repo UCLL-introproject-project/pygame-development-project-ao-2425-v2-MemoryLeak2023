@@ -64,3 +64,27 @@ def draw_cards(player, dealer, reveal):
             screen.blit(font.render('???', True, 'black'), (75+70*i, 165+5*i)) #Hier wordt de kaart anoniem gemaakt totdat reveal op True staat.
             screen.blit(font.render('???', True, 'black'), (75+70*i, 335+5*i))
         pygame.draw.rect(screen, 'blue', [70+(70*i), 160+(5*i), 120,220], 5,5) #Een blauwe rand i.p.v. rood, zodat je visueel onderscheid maakt tussen speler en dealer.
+
+# een hand met kaarten omzetten naar de beste mogelijke score in blackjack
+def calculate_score(hand):
+    #bereken de score 'hand' elke keer opnieuw. Check het aantal azen.
+    hand_score = 0 
+    aces_count = hand.count('A')
+
+    for i in range(len(hand)):
+        # 2,3,4,5,6,7,8,9 -> tel op bij het totaal
+        for j in range(8):
+            if hand[i] == cards[j]:
+                hand_score += int(hand[i])
+            # 10 en prentjes -> +10
+            if hand[i] in ['10', 'J', 'Q', 'K']:
+                hand_score += 10
+            # Aas -> we tellen 11 op en checken daarna of we dit moeten wijzigen.
+            elif hand[i] == 'A': #dit had ook een else kunnen zijn
+                hand_score += 11
+        # Ga na hoeveel azen een 1 moeten zijn ipv een 11 om onder de 21 te blijven indien mogelijk.
+        if hand_score > 21 and aces_count > 0:
+            for i in range(aces_count):
+                if hand_score>21:
+                    hand_score -= 10
+        return hand_score
