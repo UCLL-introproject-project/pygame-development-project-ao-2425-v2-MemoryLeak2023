@@ -18,3 +18,17 @@ timer = pygame.time.Clock()
 font = pygame.font.Font('freesansbold.ttf', 44)
 smaller_font = pygame.font.Font('freesansbold.ttf', 36)
 active = False
+
+#win, loss, draw/push
+records = [0,0,0]
+player_score = 0
+dealer_score = 0
+initial_deal = False
+my_hand = []
+dealer_hand = []
+outcome = 0
+revael_dealer = False
+hand_active = False
+outcome = 0
+add_score = False
+results = ['', 'PLAYER BUSTED o_O', 'Player WINS! :-)', 'DEALER WINS :(', 'TIE GAME...']
