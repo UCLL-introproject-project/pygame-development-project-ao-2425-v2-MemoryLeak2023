@@ -32,3 +32,17 @@ hand_active = False
 outcome = 0
 add_score = False
 results = ['', 'PLAYER BUSTED o_O', 'Player WINS! :-)', 'DEALER WINS :(', 'TIE GAME...']
+
+# Deze functie deelt één willekeurige kaart uit van het deck aan een hand.
+def deal_cards(current_hand, current_deck):
+    card = random.randint(0, len(current_deck))
+    current_hand.append(current_deck[card-1]) #Neem de kaart op index card - 1 uit het deck en voeg die toe aan de hand.
+    current_deck.pop(card-1) #Verwijder diezelfde kaart uit het deck (anders zou ze dubbel kunnen worden uitgedeeld).
+    return current_hand, current_deck
+
+# Toon de scores voor de player en de dealer op het scherm
+def draw_scores(player, dealer):
+    screen.blit(font.render(f'Score[{player}]', True, 'white'), (350, 400)) #font.render maakt een stukje tekst aan. De 'True' geeft aan dat de tekst gladde randen moet hebben. 'White' is de kleur van de tekst.
+    if revael_dealer:
+        screen.blit(font.render(f'Score[{dealer}]', True, 'white'), (350, 100))
+
