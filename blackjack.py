@@ -133,29 +133,29 @@ def draw_game(act, record, result):
         button_list.append(deal)
     else:
         # HIT-knop links van midden
-        hit_x = 0.85 * mid_x
-        hit = pygame.draw.rect(screen, 'white', [hit_x, y_position, button_width, button_height], 0, 5)
-        pygame.draw.rect(screen, 'gold', [hit_x, y_position, button_width, button_height], 3, 5)
+        hit_x = 0.95 * mid_x
+        hit = pygame.draw.rect(screen, 'white', [hit_x, y_position, button_width-30, button_height], 0, 5)
+        pygame.draw.rect(screen, 'gold', [hit_x, y_position, button_width-30, button_height], 3, 5)
         hit_text = font.render('HIT ME', True, 'black')
-        screen.blit(hit_text, (hit_x + 55, y_position + 20))
+        screen.blit(hit_text, (hit_x + 35, y_position + 20))
         button_list.append(hit)
 
         # STAND-knop rechts van midden
-        stand_x = 1.4*mid_x
-        stand = pygame.draw.rect(screen, 'white', [stand_x, y_position, button_width, button_height], 0, 5)
-        pygame.draw.rect(screen, 'gold', [stand_x, y_position, button_width, button_height], 3, 5)
+        stand_x = 1.45*mid_x
+        stand = pygame.draw.rect(screen, 'white', [stand_x, y_position, button_width-30, button_height], 0, 5)
+        pygame.draw.rect(screen, 'gold', [stand_x, y_position, button_width-30, button_height], 3, 5)
         stand_text = font.render('STAND', True, 'black')
-        screen.blit(stand_text, (stand_x + 40, y_position + 20))
+        screen.blit(stand_text, (stand_x + 35, y_position + 20))
         button_list.append(stand)
 
         # Scoretekst
         score_text = smaller_font.render(f'Wins: {record[0]}   Losses: {record[1]}   Draws: {record[2]}', True, 'white')
-        screen.blit(score_text, (0.85 * mid_x, 20))
+        screen.blit(score_text, (0.95 * mid_x, 20))
 
     # Bij einde spel: restart-knop
     if result != 0:
         result_text = font.render(results[result], True, 'white')
-        screen.blit(result_text, (20, 100))
+        screen.blit(result_text, (550, 180))
         deal_x = 1.4 * mid_x
         deal_y = y_position - 100
         deal = pygame.draw.rect(screen, 'white', [deal_x, deal_y, button_width, button_height], 0, 5)
