@@ -35,7 +35,11 @@ reveal_dealer = False
 hand_active = False
 add_score = False  # wordt True wanneer we de score mogen toevoegen
 
-results = ['', 'PLAYER BUSTED o_O', 'Player WINS! :-)', 'DEALER WINS :(', 'TIE GAME...']
+results = [ '',
+    'Huilen maar...',
+    'Jij wint! Hoera!',
+    'Huilen maar...',
+    'Gelijkspel!']
 
 # Deze functie deelt één willekeurige kaart uit van het deck aan een hand.
 def deal_cards(current_hand, current_deck):
@@ -53,20 +57,20 @@ def draw_scores(player, dealer):
 # Teken de kaarten van speler en dealer
 def draw_cards(player, dealer, reveal):
     for i in range(len(player)):
-        pygame.draw.rect(screen, 'white', [70 + (70 * i), 460 + (5 * i), 120, 220], 0, 5)
+        pygame.draw.rect(screen, (255, 255, 240), [70 + (70*i), 460+(5*i), 120, 220], 0, 5)  # lichte kleur
         screen.blit(font.render(player[i], True, 'black'), (75 + 70 * i, 465 + 5 * i))
         screen.blit(font.render(player[i], True, 'black'), (75 + 70 * i, 635 + 5 * i))
-        pygame.draw.rect(screen, 'red', [70 + (70 * i), 460 + (5 * i), 120, 220], 5, 5)
+        pygame.draw.rect(screen, (255, 182, 193), [70+(70*i), 460 + (5*i), 120,220], 5,5)  # pastelroze rand
 
     for i in range(len(dealer)):
-        pygame.draw.rect(screen, 'white', [70 + (70 * i), 160 + (5 * i), 120, 220], 0, 5)
+        pygame.draw.rect(screen, (240, 248, 255), [70+(70*i), 160+(5*i), 120,220], 0,5)  # lichte blauwe achtergrond
         if i != 0 or reveal:
             screen.blit(font.render(dealer[i], True, 'black'), (75 + 70 * i, 165 + 5 * i))
             screen.blit(font.render(dealer[i], True, 'black'), (75 + 70 * i, 335 + 5 * i))
         else:
             screen.blit(font.render('???', True, 'black'), (75 + 70 * i, 165 + 5 * i))
             screen.blit(font.render('???', True, 'black'), (75 + 70 * i, 335 + 5 * i))
-        pygame.draw.rect(screen, 'blue', [70 + (70 * i), 160 + (5 * i), 120, 220], 5, 5)
+        pygame.draw.rect(screen, (135, 206, 250), [70+(70*i), 160+(5*i), 120,220], 5,5)  # pastelblauwe rand
 
 # Bereken de waarde van een hand kaarten
 def calculate_score(hand):
@@ -146,7 +150,7 @@ def check_endgame(hand_act, deal_score, play_score, result, totals, add):
 run = True
 while run:
     timer.tick(fps)
-    screen.fill('black')
+    screen.fill((255, 200, 255))  # een zachtroze achtergrond (RGB)
 
     if initial_deal:
         for i in range(2):
