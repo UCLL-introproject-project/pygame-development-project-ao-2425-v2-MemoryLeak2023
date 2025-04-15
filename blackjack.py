@@ -4,7 +4,9 @@ import random  # om willekeurig kaarten te trekken
 import pygame
 
 pygame.init()  # start alle benodigde modules van Pygame op: beeld, events, tijd
-
+background_img = pygame.image.load('pygame-development-project-ao-2425-v2-MemoryLeak2023/images_blackjack/Unicorn_banner.png')
+unicorn_img = pygame.image.load('pygame-development-project-ao-2425-v2-MemoryLeak2023/images_blackjack/unicorn_geen_tekst.png')
+background_img = pygame.transform.scale(background_img, (600, 200))
 # variabelen van het spel
 cards = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
 one_deck = 4 * cards  # een deck bevat 4 keer elke kaart
@@ -95,19 +97,19 @@ def draw_game(act, record, result):
     button_list = []
     if not act:
         deal = pygame.draw.rect(screen, 'white', [150, 20, 300, 100], 0, 5)
-        pygame.draw.rect(screen, 'green', [150, 20, 300, 100], 3, 5)
+        pygame.draw.rect(screen, 'purple', [150, 20, 300, 100], 3, 5)
         deal_text = font.render('DEAL HAND', True, 'black')
         screen.blit(deal_text, (165, 50))
         button_list.append(deal)
     else:
         hit = pygame.draw.rect(screen, 'white', [0, 700, 300, 100], 0, 5)
-        pygame.draw.rect(screen, 'green', [0, 700, 300, 100], 3, 5)
+        pygame.draw.rect(screen, 'gold', [0, 700, 300, 100], 3, 5)
         hit_text = font.render('HIT ME', True, 'black')
         screen.blit(hit_text, (55, 735))
         button_list.append(hit)
 
         stand = pygame.draw.rect(screen, 'white', [300, 700, 300, 100], 0, 5)
-        pygame.draw.rect(screen, 'green', [300, 700, 300, 100], 3, 5)
+        pygame.draw.rect(screen, 'gold', [300, 700, 300, 100], 3, 5)
         stand_text = font.render('STAND', True, 'black')
         screen.blit(stand_text, (355, 735))
         button_list.append(stand)
@@ -118,7 +120,7 @@ def draw_game(act, record, result):
     if result != 0:
         screen.blit(font.render(results[result], True, 'white'), (15, 25))
         deal = pygame.draw.rect(screen, 'white', [150, 220, 300, 100], 0, 5)
-        pygame.draw.rect(screen, 'green', [150, 220, 300, 100], 3, 5)
+        pygame.draw.rect(screen, 'purple', [150, 220, 300, 100], 3, 5)
         pygame.draw.rect(screen, 'black', [153, 223, 294, 94], 3, 5)
         deal_text = font.render('NEW HAND', True, 'black')
         screen.blit(deal_text, (165, 250))
@@ -150,8 +152,9 @@ def check_endgame(hand_act, deal_score, play_score, result, totals, add):
 run = True
 while run:
     timer.tick(fps)
+    
     screen.fill((255, 200, 255))  # een zachtroze achtergrond (RGB)
-
+    screen.blit(background_img, (0, 250))  # banner
     if initial_deal:
         for i in range(2):
             my_hand, game_deck = deal_cards(my_hand, game_deck)
