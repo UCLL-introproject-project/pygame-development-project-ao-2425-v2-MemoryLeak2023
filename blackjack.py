@@ -156,12 +156,12 @@ def draw_game(act, record, result):
     if result != 0:
         result_text = font.render(results[result], True, 'white')
         screen.blit(result_text, (20, 100))
-        deal_x = mid_x - button_width // 2
+        deal_x = 1.4 * mid_x
         deal_y = y_position - 100
         deal = pygame.draw.rect(screen, 'white', [deal_x, deal_y, button_width, button_height], 0, 5)
         pygame.draw.rect(screen, 'purple', [deal_x, deal_y, button_width, button_height], 3, 5)
         pygame.draw.rect(screen, 'black', [deal_x + 3, deal_y + 3, button_width - 6, button_height - 6], 3, 5)
-        deal_text = font.render('NEW HAND', True, 'black')
+        deal_text = smaller_font.render('NEW HAND', True, 'black')
         screen.blit(deal_text, (deal_x + 25, deal_y + 20))
         button_list.append(deal)
 
