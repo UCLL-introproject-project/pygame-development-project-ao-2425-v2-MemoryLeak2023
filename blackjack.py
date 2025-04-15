@@ -32,8 +32,8 @@ text_offset_y = 15
 
 # klok voor tijdsbeheer en fonts
 timer = pygame.time.Clock()
-font = pygame.font.Font('freesansbold.ttf', 44)
-smaller_font = pygame.font.Font('freesansbold.ttf', 36)
+font = pygame.font.Font('pygame-development-project-ao-2425-v2-MemoryLeak2023/marimpa_FONT/Marimpa.ttf', 44)
+smaller_font = pygame.font.Font('pygame-development-project-ao-2425-v2-MemoryLeak2023/marimpa_FONT/Marimpa.ttf', 36)
 
 active = False  # of het spel bezig is
 
@@ -129,7 +129,7 @@ def draw_game(act, record, result):
         deal = pygame.draw.rect(screen, 'white', [deal_x, deal_y, button_width, button_height], 0, 5)
         pygame.draw.rect(screen, 'purple', [deal_x, deal_y, button_width, button_height], 3, 5)
         deal_text = font.render('DEAL HAND', True, 'black')
-        screen.blit(deal_text, (deal_x + 40, deal_y + 20))
+        screen.blit(deal_text, (deal_x + 14, deal_y + 20))
         button_list.append(deal)
     else:
         # HIT-knop links van midden
