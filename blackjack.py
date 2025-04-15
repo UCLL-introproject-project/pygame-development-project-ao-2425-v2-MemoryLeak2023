@@ -64,9 +64,9 @@ def deal_cards(current_hand, current_deck):
 
 # Toon de scores op het scherm
 def draw_scores(player, dealer):
-    screen.blit(font.render(f'Score[{player}]', True, 'white'), (350, 400))
+    screen.blit(font.render(f'Score[{player}]', True, 'white'), (600, 400))
     if reveal_dealer:
-        screen.blit(font.render(f'Score[{dealer}]', True, 'white'), (350, 100))
+        screen.blit(font.render(f'Score[{dealer}]', True, 'white'), (600, 100))
 
 # Teken de kaarten van speler en dealer: ik heb bovenaan de code kaartinstellingen geschreven die het veel makkelijker maken om wijzigen door te voeren in de functie in vergelijking met de oorspronkelijk code.
 def draw_cards(player, dealer, reveal):
