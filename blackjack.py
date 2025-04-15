@@ -6,17 +6,29 @@ import pygame
 pygame.init()  # start alle benodigde modules van Pygame op: beeld, events, tijd
 background_img = pygame.image.load('pygame-development-project-ao-2425-v2-MemoryLeak2023/images_blackjack/Unicorn_banner.png')
 unicorn_img = pygame.image.load('pygame-development-project-ao-2425-v2-MemoryLeak2023/images_blackjack/unicorn_geen_tekst.png')
-background_img = pygame.transform.scale(background_img, (600, 200))
+background_img = pygame.transform.scale(background_img, (1000, 200))
 # variabelen van het spel
 cards = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
 one_deck = 4 * cards  # een deck bevat 4 keer elke kaart
 
 decks = 4  # aantal decks dat wordt gebruikt
-WIDTH = 600
-HEIGHT = 900
+WIDTH = 1000
+HEIGHT = 700
 screen = pygame.display.set_mode([WIDTH, HEIGHT])
 pygame.display.set_caption('Pygame Blackjack!')
 fps = 60  # snelheid van het spel
+
+# Kaartinstellingen
+card_width = 120
+card_height = 180
+card_spacing = 90  # horizontale afstand tussen kaarten
+
+# Posities van speler- en dealerkaarten
+player_y = 480
+dealer_y = 50
+
+# Afstand tussen boven- en onderwaarde op de kaart
+text_offset_y = 15
 
 # klok voor tijdsbeheer en fonts
 timer = pygame.time.Clock()
@@ -56,23 +68,27 @@ def draw_scores(player, dealer):
     if reveal_dealer:
         screen.blit(font.render(f'Score[{dealer}]', True, 'white'), (350, 100))
 
-# Teken de kaarten van speler en dealer
+# Teken de kaarten van speler en dealer: ik heb bovenaan de code kaartinstellingen geschreven die het veel makkelijker maken om wijzigen door te voeren in de functie in vergelijking met de oorspronkelijk code.
 def draw_cards(player, dealer, reveal):
+    # Spelerkaarten
     for i in range(len(player)):
-        pygame.draw.rect(screen, (255, 255, 240), [70 + (70*i), 460+(5*i), 120, 220], 0, 5)  # lichte kleur
-        screen.blit(font.render(player[i], True, 'black'), (75 + 70 * i, 465 + 5 * i))
-        screen.blit(font.render(player[i], True, 'black'), (75 + 70 * i, 635 + 5 * i))
-        pygame.draw.rect(screen, (255, 182, 193), [70+(70*i), 460 + (5*i), 120,220], 5,5)  # pastelroze rand
+        x = 50 + i * card_spacing
+        pygame.draw.rect(screen, (255, 255, 240), [x, player_y, card_width, card_height], 0, 5)
+        screen.blit(font.render(player[i], True, (255, 105, 180)), (x + 10, player_y + text_offset_y))
+        screen.blit(font.render(player[i], True, (255, 105, 180)), (x + 10, player_y + card_height - 50))
+        pygame.draw.rect(screen, (255, 182, 193), [x, player_y, card_width, card_height], 5, 5)
 
+    # Dealerkaarten
     for i in range(len(dealer)):
-        pygame.draw.rect(screen, (240, 248, 255), [70+(70*i), 160+(5*i), 120,220], 0,5)  # lichte blauwe achtergrond
+        x = 50 + i * card_spacing
+        pygame.draw.rect(screen, (240, 248, 255), [x, dealer_y, card_width, card_height], 0, 5)
         if i != 0 or reveal:
-            screen.blit(font.render(dealer[i], True, 'black'), (75 + 70 * i, 165 + 5 * i))
-            screen.blit(font.render(dealer[i], True, 'black'), (75 + 70 * i, 335 + 5 * i))
+            screen.blit(font.render(dealer[i], True, (100, 149, 237)), (x + 10, dealer_y + text_offset_y))
+            screen.blit(font.render(dealer[i], True, (100, 149, 237)), (x + 10, dealer_y + card_height - 50))
         else:
-            screen.blit(font.render('???', True, 'black'), (75 + 70 * i, 165 + 5 * i))
-            screen.blit(font.render('???', True, 'black'), (75 + 70 * i, 335 + 5 * i))
-        pygame.draw.rect(screen, (135, 206, 250), [70+(70*i), 160+(5*i), 120,220], 5,5)  # pastelblauwe rand
+            screen.blit(font.render('??', True, (100, 149, 237)), (x + 10, dealer_y + text_offset_y))
+            screen.blit(font.render('??', True, (100, 149, 237)), (x + 10, dealer_y + card_height - 50))
+        pygame.draw.rect(screen, (135, 206, 250), [x, dealer_y, card_width, card_height], 5, 5)
 
 # Bereken de waarde van een hand kaarten
 def calculate_score(hand):
@@ -95,36 +111,60 @@ def calculate_score(hand):
 # Teken de knoppen en spelstatus op het scherm
 def draw_game(act, record, result):
     button_list = []
+    #plaatsing van objecten dynamisch maken -> responsief!
+    screen_width = screen.get_width() #geeft de breedte van het venster terug in pixels.
+    screen_height = screen.get_height() #geeft de hoogte van het venster terug in pixels.
+
+    button_width = 250
+    button_height = 80
+    spacing = 20  # ruimte tussen knoppen
+
+    # Posities berekenen
+    mid_x = screen_width // 2
+    y_position = screen_height - button_height - 30  # onderaan met beetje marge
+
     if not act:
-        deal = pygame.draw.rect(screen, 'white', [150, 20, 300, 100], 0, 5)
-        pygame.draw.rect(screen, 'purple', [150, 20, 300, 100], 3, 5)
+        deal_x = mid_x - button_width // 2
+        deal_y = y_position
+        deal = pygame.draw.rect(screen, 'white', [deal_x, deal_y, button_width, button_height], 0, 5)
+        pygame.draw.rect(screen, 'purple', [deal_x, deal_y, button_width, button_height], 3, 5)
         deal_text = font.render('DEAL HAND', True, 'black')
-        screen.blit(deal_text, (165, 50))
+        screen.blit(deal_text, (deal_x + 40, deal_y + 20))
         button_list.append(deal)
     else:
-        hit = pygame.draw.rect(screen, 'white', [0, 700, 300, 100], 0, 5)
-        pygame.draw.rect(screen, 'gold', [0, 700, 300, 100], 3, 5)
+        # HIT-knop links van midden
+        hit_x = 0.85 * mid_x
+        hit = pygame.draw.rect(screen, 'white', [hit_x, y_position, button_width, button_height], 0, 5)
+        pygame.draw.rect(screen, 'gold', [hit_x, y_position, button_width, button_height], 3, 5)
         hit_text = font.render('HIT ME', True, 'black')
-        screen.blit(hit_text, (55, 735))
+        screen.blit(hit_text, (hit_x + 55, y_position + 20))
         button_list.append(hit)
 
-        stand = pygame.draw.rect(screen, 'white', [300, 700, 300, 100], 0, 5)
-        pygame.draw.rect(screen, 'gold', [300, 700, 300, 100], 3, 5)
+        # STAND-knop rechts van midden
+        stand_x = 1.4*mid_x
+        stand = pygame.draw.rect(screen, 'white', [stand_x, y_position, button_width, button_height], 0, 5)
+        pygame.draw.rect(screen, 'gold', [stand_x, y_position, button_width, button_height], 3, 5)
         stand_text = font.render('STAND', True, 'black')
-        screen.blit(stand_text, (355, 735))
+        screen.blit(stand_text, (stand_x + 40, y_position + 20))
         button_list.append(stand)
 
+        # Scoretekst
         score_text = smaller_font.render(f'Wins: {record[0]}   Losses: {record[1]}   Draws: {record[2]}', True, 'white')
-        screen.blit(score_text, (15, 840))
+        screen.blit(score_text, (0.85 * mid_x, 20))
 
+    # Bij einde spel: restart-knop
     if result != 0:
-        screen.blit(font.render(results[result], True, 'white'), (15, 25))
-        deal = pygame.draw.rect(screen, 'white', [150, 220, 300, 100], 0, 5)
-        pygame.draw.rect(screen, 'purple', [150, 220, 300, 100], 3, 5)
-        pygame.draw.rect(screen, 'black', [153, 223, 294, 94], 3, 5)
+        result_text = font.render(results[result], True, 'white')
+        screen.blit(result_text, (20, 100))
+        deal_x = mid_x - button_width // 2
+        deal_y = y_position - 100
+        deal = pygame.draw.rect(screen, 'white', [deal_x, deal_y, button_width, button_height], 0, 5)
+        pygame.draw.rect(screen, 'purple', [deal_x, deal_y, button_width, button_height], 3, 5)
+        pygame.draw.rect(screen, 'black', [deal_x + 3, deal_y + 3, button_width - 6, button_height - 6], 3, 5)
         deal_text = font.render('NEW HAND', True, 'black')
-        screen.blit(deal_text, (165, 250))
+        screen.blit(deal_text, (deal_x + 25, deal_y + 20))
         button_list.append(deal)
+
     return button_list
 
 # Controleer of het spel is afgelopen en wie er gewonnen heeft
