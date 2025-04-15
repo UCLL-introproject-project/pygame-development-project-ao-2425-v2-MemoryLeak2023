@@ -19,6 +19,7 @@ font = pygame.font.Font('freesansbold.ttf', 44)
 smaller_font = pygame.font.Font('freesansbold.ttf', 36)
 active = False
 
+
 #win, loss, draw/push
 records = [0,0,0]
 player_score = 0
@@ -157,7 +158,7 @@ def check_endgame(hand_act, deal_score, play_score, result, totals, add):
                 totals[2] += 1 #Aantal gelijkspellen
 
             add = False
-        return result, totals, add
+    return result, totals, add
 
 #main game loop
 run = True
@@ -189,3 +190,57 @@ while run:
                 dealer_hand, game_deck = deal_cards(dealer_hand, game_deck)
         draw_scores(player_score, dealer_score) # Toon de actuele scores op het scherm
         buttons = draw_game(active, records, outcome) # Teken de knoppen ('HIT ME', 'STAND', etc.) en sla ze op voor eventlisteners
+
+#event handling: QUIT = exit game
+    for event in pygame.event.get(): #Doorloopt alle events die pygame heeft geregistreerd sinds de vorige keer dat pygame.event.get() werd aangeroepen (bv. muisklikken, toetsaanslagen, sluiten van het venster…).
+        if event.type == pygame.QUIT:
+            run = False
+        if event.type == pygame.MOUSEBUTTONUP: #release click
+            if not active: #het spel is nog niet bezig.
+                if buttons[0].collidepoint(event.pos): #We checken of de muisklik zich bevindt op de eerste knop (de DEAL HAND-knop). event.pos geeft de positie van de muis op het moment van klikken.
+
+                    active = True #Het spel wordt geactiveerd.
+                    initial_deal = True
+                    game_deck = copy.deepcopy(decks*one_deck) #De kaarten worden klaargemaakt (deepcopy van alle kaarten).
+                    my_hand = [] #start spel met nul kaarten
+                    dealer_hand = [] #start spel met nul kaarten
+                    outcome = 0 #score wordt op nul gezet
+                    hand_active = True
+                    reveal_dealer = False #De dealer verbergt zijn kaart.
+                    outcome = 0
+                    hand_active = True
+                    reveal_dealer = False
+                    outcome = 0 # start spel met score nul
+                    add_score = True #om te voorkomen dat de score per ongeluk meermaals wordt toegevoegd.
+
+                else: #het spel is al bezig
+                    #if player can hit, allow them to draw a card
+                    if buttons[0].collidepoint(event.pos) and player_score < 21 and hand_active: #Klik op de STAND-knop (knop 1). De dealerkaarten zijn niet zichtbaar
+                        my_hand, game_deck = deal_cards(my_hand, game_deck)
+                    # Speler zegt “ik pas”, dealer mag nu spelen.
+                    elif buttons[1].collidepoint(event.pos) and not reveal_dealer: 
+                        reveal_dealer = True
+                        hand_active = False
+                    elif len(buttons) == 3: #Er is een derde knop (de NEW HAND-knop verschijnt alleen bij eindresultaat). Als erop geklikt wordt: herstart het spel volledig.
+                        
+                        if buttons[2].collidepoint(event.pos):
+                            active = True
+                            initial_deal = True
+                            game_deck = copy.deepcopy(decks * one_deck)
+                            my_hand = []
+                            dealer_hand = []
+                            outcome = 0
+                            hand_active = True
+                            reveal_dealer = False
+                            outcome = 0
+                            add_score = True
+                            dealer_score = 0
+                            player_score = 0
+
+    #als de speler >= 21 heeft: beeïndig beurt.
+    if hand_active and player_score >= 21:
+        hand_active = False
+        reveal_dealer = True
+    outcome, records, add_score = check_endgame(hand_active, dealer_score, player_score, outcome, records, add_score)
+    pygame.display.flip()
+pygame.quit()
