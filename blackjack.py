@@ -4,6 +4,7 @@ import random  # om willekeurig kaarten te trekken
 import pygame
 
 pygame.init()  # start alle benodigde modules van Pygame op: beeld, events, tijd
+pygame.mixer.init()
 background_img = pygame.image.load('project/pygame-development-project-ao-2425-v2-MemoryLeak2023/images_blackjack/Unicorn_banner.png')
 unicorn_img = pygame.image.load('project/pygame-development-project-ao-2425-v2-MemoryLeak2023/images_blackjack/unicorn_geen_tekst.png')
 background_img = pygame.transform.scale(background_img, (1000, 200))
@@ -54,6 +55,12 @@ results = [ '',
     'Jij wint! Hoera!',
     'Huilen maar...',
     'Gelijkspel!']
+
+# Geluidjes voor intro, winst, verlies, gelijkspel
+intro_sound = pygame.mixer.Sound('project/pygame-development-project-ao-2425-v2-MemoryLeak2023/sounds/magic.mp3')
+win_sound = pygame.mixer.Sound('project/pygame-development-project-ao-2425-v2-MemoryLeak2023/sounds/success.mp3')
+loss_sound = pygame.mixer.Sound('project/pygame-development-project-ao-2425-v2-MemoryLeak2023/sounds/scream.mp3')
+draw_sound = pygame.mixer.Sound('project/pygame-development-project-ao-2425-v2-MemoryLeak2023/sounds/giggle.mp3')
 
 # Deze functie deelt één willekeurige kaart uit van het deck aan een hand.
 def deal_cards(current_hand, current_deck):
@@ -161,6 +168,7 @@ def draw_game(act, record, result, font, smaller_font):
 
     if not act:
         # Startknop: DEAL HAND
+        intro_sound.play(0)
         deal_btn = Button(
             text="DEAL HAND",
             x=mid_x - button_width // 2,
@@ -247,12 +255,15 @@ def check_endgame(hand_act, deal_score, play_score, result, totals, add):
         else:
             result = 4
         if add:
-            if result == 1 or result == 3:
-                totals[1] += 1  # verlies voor speler
-            elif result == 2:
-                totals[0] += 1  # winst voor speler
-            else:
-                totals[2] += 1  # gelijkspel
+            if result == 1 or result == 3:# verlies voor speler
+                loss_sound.play()
+                totals[1] += 1  
+            elif result == 2:  # winst voor speler
+                win_sound.play()
+                totals[0] += 1 
+            else: # gelijkspel
+                draw_sound.play()
+                totals[2] += 1  
             add = False
     return result, totals, add
 
