@@ -4,8 +4,8 @@ import random  # om willekeurig kaarten te trekken
 import pygame
 
 pygame.init()  # start alle benodigde modules van Pygame op: beeld, events, tijd
-background_img = pygame.image.load('pygame-development-project-ao-2425-v2-MemoryLeak2023/images_blackjack/Unicorn_banner.png')
-unicorn_img = pygame.image.load('pygame-development-project-ao-2425-v2-MemoryLeak2023/images_blackjack/unicorn_geen_tekst.png')
+background_img = pygame.image.load('project/pygame-development-project-ao-2425-v2-MemoryLeak2023/images_blackjack/Unicorn_banner.png')
+unicorn_img = pygame.image.load('project/pygame-development-project-ao-2425-v2-MemoryLeak2023/images_blackjack/unicorn_geen_tekst.png')
 background_img = pygame.transform.scale(background_img, (1000, 200))
 # variabelen van het spel
 cards = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
@@ -32,8 +32,8 @@ text_offset_y = 15
 
 # klok voor tijdsbeheer en fonts
 timer = pygame.time.Clock()
-font = pygame.font.Font('pygame-development-project-ao-2425-v2-MemoryLeak2023/marimpa_FONT/Marimpa.ttf', 44)
-smaller_font = pygame.font.Font('pygame-development-project-ao-2425-v2-MemoryLeak2023/marimpa_FONT/Marimpa.ttf', 36)
+font = pygame.font.Font('project/pygame-development-project-ao-2425-v2-MemoryLeak2023/marimpa_FONT/Marimpa.ttf', 44)
+smaller_font = pygame.font.Font('project/pygame-development-project-ao-2425-v2-MemoryLeak2023/marimpa_FONT/Marimpa.ttf', 36)
 
 active = False  # of het spel bezig is
 
@@ -108,8 +108,41 @@ def calculate_score(hand):
                 hand_score -= 10
     return hand_score
 
-# Teken de knoppen en spelstatus op het scherm
-def draw_game(act, record, result):
+# Teken de knoppen en spelstatus op het scherm. Ik maak een klasse aan om de knoppen mét hover effect makkelijker aan te roepen om herhaling in mijn code te vermijden.
+class Button:
+    def __init__(self, text, x, y, width, height, font, base_color, hover_color, text_color, hover_text_color):
+        self.text = text
+        self.rect = pygame.Rect(x, y, width, height)
+        self.font = font
+        self.base_color = base_color
+        self.hover_color = hover_color
+        self.text_color = text_color
+        self.hover_text_color = hover_text_color
+
+    def draw(self, screen):
+        mouse_pos = pygame.mouse.get_pos()
+        is_hovered = self.rect.collidepoint(mouse_pos)
+
+        # Kies de juiste kleuren op basis van hover
+        bg_color = self.hover_color if is_hovered else self.base_color
+        txt_color = self.hover_text_color if is_hovered else self.text_color
+
+        # Teken knop en rand
+        pygame.draw.rect(screen, bg_color, self.rect, 0, 5)  # knop-achtergrond
+        pygame.draw.rect(screen, (255, 215, 0), self.rect, 3, 5)  # rand (goud)
+
+        # Teken tekst in het midden
+        text_surface = self.font.render(self.text, True, txt_color)
+        text_rect = text_surface.get_rect(center=self.rect.center)
+        screen.blit(text_surface, text_rect)
+
+    def is_clicked(self, event):
+        if event.type == pygame.MOUSEBUTTONUP:
+            if self.rect.collidepoint(event.pos):
+                return True
+        return False
+
+def draw_game(act, record, result, font, smaller_font):
     button_list = []
     #plaatsing van objecten dynamisch maken -> responsief!
     screen_width = screen.get_width() #geeft de breedte van het venster terug in pixels.
@@ -123,64 +156,58 @@ def draw_game(act, record, result):
     mid_x = screen_width // 2
     y_position = screen_height - button_height - 30  # onderaan met beetje marge
 
+    # MOUSE POS VOOR ALLE KNOPPEN
+    mouse_pos = pygame.mouse.get_pos()
+
     if not act:
-        deal_x = mid_x - button_width // 2
-        deal_y = y_position
-        deal = pygame.draw.rect(screen, 'white', [deal_x, deal_y, button_width, button_height], 0, 5)
-        pygame.draw.rect(screen, 'purple', [deal_x, deal_y, button_width, button_height], 3, 5)
-        deal_text = font.render('DEAL HAND', True, 'black')
-        screen.blit(deal_text, (deal_x + 14, deal_y + 20))
-        button_list.append(deal)
+        # Startknop: DEAL HAND
+        deal_btn = Button(
+            text="DEAL HAND",
+            x=mid_x - button_width // 2,
+            y=y_position,
+            width=button_width,
+            height=button_height,
+            font=font,
+            base_color=(255, 255, 255),
+            hover_color=(200, 162, 200),  # zachte paarstint
+            text_color='black',
+            hover_text_color=(75, 0, 130)  # indigo
+        )
+        deal_btn.draw(screen)
+        button_list.append(deal_btn)
+
     else:
-        # HIT-knop links van midden
-        hit_x = 0.95 * mid_x
-        hit_rect = pygame.Rect(hit_x, y_position, button_width - 30, button_height)
-
-        # Muispositie controleren
-        mouse_pos = pygame.mouse.get_pos() #Deze functie geeft de huidige positie van je muis op het scherm terug als een tuple: (x, y).
-        hovering_hit = hit_rect.collidepoint(mouse_pos) #Dit checkt of een bepaald punt (in dit geval de muispositie) binnen het rechthoekige gebied van de knop (hit_rect) valt.
-
-        # Kleuren aanpassen op basis van hover
-        hit_bg_color = (255, 255, 255)  # wit
-        hit_border_color = (255, 215, 0) if not hovering_hit else (255, 182, 193)  # gold → pastelroze bij hover
-        hit_text_color = 'black' if not hovering_hit else (255, 105, 180)  # zwart → hotpink bij hover
-
-        # Teken knop
-        hit = pygame.draw.rect(screen, hit_bg_color, hit_rect, 0, 5)
-        pygame.draw.rect(screen, hit_border_color, hit_rect, 3, 5)
-
-        # Teken tekst
-        hit_text = font.render('HIT ME', True, hit_text_color)
-        text_rect = hit_text.get_rect(center=hit_rect.center)
-        screen.blit(hit_text, text_rect)
-
-        # Toevoegen aan knoppenlijst
-        button_list.append(hit)
+        # HIT ME knop links van het midden
+        hit_btn = Button(
+            text="HIT ME",
+            x=0.95 * mid_x,
+            y=y_position,
+            width=button_width - 30,
+            height=button_height,
+            font=font,
+            base_color=(255, 255, 255),
+            hover_color=(255, 182, 193),
+            text_color='black',
+            hover_text_color=(255, 105, 180)
+        )
+        hit_btn.draw(screen)
+        button_list.append(hit_btn)
 
         # STAND-knop rechts van midden
-        stand_x = 1.45*mid_x
-        stand_rect = pygame.Rect(stand_x, y_position, button_width - 30, button_height)
-
-        # Muispositie controleren
-        mouse_pos = pygame.mouse.get_pos() #Deze functie geeft de huidige positie van je muis op het scherm terug als een tuple: (x, y).
-        hovering_stand = stand_rect.collidepoint(mouse_pos) #Dit checkt of een bepaald punt (in dit geval de muispositie) binnen het rechthoekige gebied van de knop (hit_rect) valt.
-
-        # Kleuren aanpassen op basis van hover
-        stand_bg_color = (255, 255, 255)  # wit
-        stand_border_color = (255, 215, 0) if not hovering_stand else (255, 182, 193)  # gold → pastelroze bij hover
-        stand_text_color = 'black' if not hovering_stand else (255, 105, 180)  # zwart → hotpink bij hover
-        
-        # Teken knop
-        stand = pygame.draw.rect(screen, stand_bg_color, stand_rect, 0, 5)
-        pygame.draw.rect(screen, stand_border_color, stand_rect, 3, 5)
-
-        # Teken tekst
-        stand_text = font.render('STAND', True, stand_text_color)
-        text_rect = stand_text.get_rect(center=stand_rect.center)
-        screen.blit(stand_text, (stand_x + 35, y_position + 20))
-        
-        # Toevoegen aan knoppenlijst
-        button_list.append(stand)
+        stand_btn = Button(
+            text="STAND",
+            x=1.45 * mid_x,
+            y=y_position,
+            width=button_width - 30,
+            height=button_height,
+            font=font,
+            base_color=(255, 255, 255),
+            hover_color=(255, 182, 193),
+            text_color='black',
+            hover_text_color=(255, 105, 180)
+        )
+        stand_btn.draw(screen)
+        button_list.append(stand_btn)
 
         # Scoretekst
         score_text = smaller_font.render(f'Wins: {record[0]}   Losses: {record[1]}   Draws: {record[2]}', True, 'white')
@@ -190,14 +217,21 @@ def draw_game(act, record, result):
     if result != 0:
         result_text = font.render(results[result], True, 'white')
         screen.blit(result_text, (550, 180))
-        deal_x = 1.4 * mid_x
-        deal_y = y_position - 100
-        deal = pygame.draw.rect(screen, 'white', [deal_x, deal_y, button_width, button_height], 0, 5)
-        pygame.draw.rect(screen, 'purple', [deal_x, deal_y, button_width, button_height], 3, 5)
-        pygame.draw.rect(screen, 'black', [deal_x + 3, deal_y + 3, button_width - 6, button_height - 6], 3, 5)
-        deal_text = smaller_font.render('NEW HAND', True, 'black')
-        screen.blit(deal_text, (deal_x + 25, deal_y + 20))
-        button_list.append(deal)
+
+        new_hand_btn = Button(
+            text="NEW HAND",
+            x=1.4 * mid_x,
+            y=y_position - 100,
+            width=button_width,
+            height=button_height,
+            font=smaller_font,  # kleinere font voor deze knop
+            base_color=(255, 255, 255),
+            hover_color=(221, 160, 221),  # plum
+            text_color='black',
+            hover_text_color=(128, 0, 128)  # paars
+        )
+        new_hand_btn.draw(screen)
+        button_list.append(new_hand_btn)
 
     return button_list
 
@@ -243,14 +277,14 @@ while run:
             if dealer_score < 17:
                 dealer_hand, game_deck = deal_cards(dealer_hand, game_deck)
         draw_scores(player_score, dealer_score)
-    buttons = draw_game(active, records, outcome)
+    buttons = draw_game(active, records, outcome, font, smaller_font)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
         if event.type == pygame.MOUSEBUTTONUP:
             if not active:
-                if buttons[0].collidepoint(event.pos):
+                if buttons[0].is_clicked(event):
                     active = True
                     initial_deal = True
                     game_deck = copy.deepcopy(decks * one_deck)
@@ -261,13 +295,13 @@ while run:
                     reveal_dealer = False
                     add_score = True
             else:
-                if buttons[0].collidepoint(event.pos) and player_score < 21 and hand_active:
+                if buttons[0].is_clicked(event) and player_score < 21 and hand_active:
                     my_hand, game_deck = deal_cards(my_hand, game_deck)
-                elif buttons[1].collidepoint(event.pos) and not reveal_dealer:
+                elif buttons[1].is_clicked(event) and not reveal_dealer:
                     reveal_dealer = True
                     hand_active = False
-                elif len(buttons) == 3:
-                    if buttons[2].collidepoint(event.pos):
+                elif len(buttons) == 3 and buttons[2].is_clicked(event):
+                    if buttons[2].is_clicked(event):
                         active = True
                         initial_deal = True
                         game_deck = copy.deepcopy(decks * one_deck)
