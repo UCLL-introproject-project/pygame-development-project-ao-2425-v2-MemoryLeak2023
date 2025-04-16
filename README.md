@@ -6,10 +6,10 @@ Een vrolijke en speelse versie van het klassieke blackjackspel, gemaakt met Pyth
 
 Klaar voor glitter ✨ en 21 regenbogen 🌈? Installeer Unicorn Blackjack op jouw computer!
 
-git clone https://github.com/MemoryLeak2023/blackjack.git
-cd blackjack
-pip install pygame
-python blackjack.py
+- git clone https://github.com/MemoryLeak2023/blackjack.git
+- cd blackjack
+- pip install pygame
+- python blackjack.py
 
 Features 🌈
 
