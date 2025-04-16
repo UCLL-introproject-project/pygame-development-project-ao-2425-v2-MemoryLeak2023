@@ -134,18 +134,52 @@ def draw_game(act, record, result):
     else:
         # HIT-knop links van midden
         hit_x = 0.95 * mid_x
-        hit = pygame.draw.rect(screen, 'white', [hit_x, y_position, button_width-30, button_height], 0, 5)
-        pygame.draw.rect(screen, 'gold', [hit_x, y_position, button_width-30, button_height], 3, 5)
-        hit_text = font.render('HIT ME', True, 'black')
-        screen.blit(hit_text, (hit_x + 35, y_position + 20))
+        hit_rect = pygame.Rect(hit_x, y_position, button_width - 30, button_height)
+
+        # Muispositie controleren
+        mouse_pos = pygame.mouse.get_pos() #Deze functie geeft de huidige positie van je muis op het scherm terug als een tuple: (x, y).
+        hovering_hit = hit_rect.collidepoint(mouse_pos) #Dit checkt of een bepaald punt (in dit geval de muispositie) binnen het rechthoekige gebied van de knop (hit_rect) valt.
+
+        # Kleuren aanpassen op basis van hover
+        hit_bg_color = (255, 255, 255)  # wit
+        hit_border_color = (255, 215, 0) if not hovering_hit else (255, 182, 193)  # gold → pastelroze bij hover
+        hit_text_color = 'black' if not hovering_hit else (255, 105, 180)  # zwart → hotpink bij hover
+
+        # Teken knop
+        hit = pygame.draw.rect(screen, hit_bg_color, hit_rect, 0, 5)
+        pygame.draw.rect(screen, hit_border_color, hit_rect, 3, 5)
+
+        # Teken tekst
+        hit_text = font.render('HIT ME', True, hit_text_color)
+        text_rect = hit_text.get_rect(center=hit_rect.center)
+        screen.blit(hit_text, text_rect)
+
+        # Toevoegen aan knoppenlijst
         button_list.append(hit)
 
         # STAND-knop rechts van midden
         stand_x = 1.45*mid_x
-        stand = pygame.draw.rect(screen, 'white', [stand_x, y_position, button_width-30, button_height], 0, 5)
-        pygame.draw.rect(screen, 'gold', [stand_x, y_position, button_width-30, button_height], 3, 5)
-        stand_text = font.render('STAND', True, 'black')
+        stand_rect = pygame.Rect(stand_x, y_position, button_width - 30, button_height)
+
+        # Muispositie controleren
+        mouse_pos = pygame.mouse.get_pos() #Deze functie geeft de huidige positie van je muis op het scherm terug als een tuple: (x, y).
+        hovering_stand = stand_rect.collidepoint(mouse_pos) #Dit checkt of een bepaald punt (in dit geval de muispositie) binnen het rechthoekige gebied van de knop (hit_rect) valt.
+
+        # Kleuren aanpassen op basis van hover
+        stand_bg_color = (255, 255, 255)  # wit
+        stand_border_color = (255, 215, 0) if not hovering_stand else (255, 182, 193)  # gold → pastelroze bij hover
+        stand_text_color = 'black' if not hovering_stand else (255, 105, 180)  # zwart → hotpink bij hover
+        
+        # Teken knop
+        stand = pygame.draw.rect(screen, stand_bg_color, stand_rect, 0, 5)
+        pygame.draw.rect(screen, stand_border_color, stand_rect, 3, 5)
+
+        # Teken tekst
+        stand_text = font.render('STAND', True, stand_text_color)
+        text_rect = stand_text.get_rect(center=stand_rect.center)
         screen.blit(stand_text, (stand_x + 35, y_position + 20))
+        
+        # Toevoegen aan knoppenlijst
         button_list.append(stand)
 
         # Scoretekst
