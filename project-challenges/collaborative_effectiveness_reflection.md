@@ -18,7 +18,9 @@ We verdeelden de taken op basis van onze sterke punten. Ik richtte me op het ver
 
 ### b. Teamwerk en bijdrage
 
-Onze samenwerking was zeer effectief. We vulden elkaar goed aan en leerden veel van elkaar. Hoewel ik in het begin meer ervaring had met Pygame, bracht Fernand waardevolle kennis in over GitHub en Python-modules. We hadden een gezonde competitieve sfeer die ons motiveerde om het beste uit onszelf te halen. We bespraken onze projecten zelfs tijdens het hardlopen of fietsen, wat leidde tot creatieve ideeën.
+Onze samenwerking was zeer effectief. We vulden elkaar goed aan en leerden veel van elkaar. Hoewel ik in het begin meer ervaring had met Pygame, bracht Fernand waardevolle kennis in over GitHub en Python-modules. Deze kennis heeft hij in een .md bestand gegoten die je in dit mapje kan terugvinden onder de naam 'git samenwerken stappenplan'.
+
+We hadden een gezonde competitieve sfeer die ons motiveerde om het beste uit onszelf te halen. We bespraken onze projecten zelfs tijdens het hardlopen of fietsen, wat leidde tot creatieve ideeën.
 
 ### c. Individuele lessen
 
