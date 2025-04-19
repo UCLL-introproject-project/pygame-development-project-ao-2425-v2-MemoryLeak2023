@@ -10,6 +10,8 @@ Ons doel was het ontwikkelen van een interactieve Blackjack-game met behulp van 
 
 Fernand heeft op zijn beurt uitgezocht hoe we elkaars code konden nakijken via GitHub met behulp van pull requests. Hij maakte een duidelijk stappenplan in een .md-bestand, wat ik actief heb gebruikt. Bovendien heeft hij mijn code grondig nagekeken en een naslagwerk gemaakt over verschillende Python-modules, wat zeer nuttig was voor een beter begrip van onze werkzaamheden.
 
+U kan in het mapje 'screenshots' mijn review van Fernands code op GitHub zien.
+
 ## 3. Reflectie
 
 ### a. Rollen en verantwoordelijkheden
