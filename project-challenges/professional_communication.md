@@ -1,2 +1,3 @@
-![email](email.png)
+![email](screenshots/email.png)
+
 
