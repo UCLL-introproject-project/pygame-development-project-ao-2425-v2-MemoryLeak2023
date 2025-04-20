@@ -21,6 +21,7 @@ We verdeelden de taken op basis van onze sterke punten. Ik richtte me op het ver
 ### b. Teamwerk en bijdrage
 
 Onze samenwerking was zeer effectief. We vulden elkaar goed aan en leerden veel van elkaar. Hoewel ik in het begin meer ervaring had met Pygame, bracht Fernand waardevolle kennis in over GitHub en Python-modules. Deze kennis heeft hij in een .md bestand gegoten die je in dit mapje kan terugvinden onder de naam 'git samenwerken stappenplan'.
+Daarnaast heeft Fernand me geholpen toen ik een README bestand rechtstreeks in GitHub had toegevoegd en vervolgens met een detached head zat en dit niet kon oplossen. We hebben de nieuwe branch toen gemerged met de de main- branche zodat ik terug verder kon werken en committen. Onze samenwerking resulteerde steeds in het besparen van tijd: we krijgen ons werk sneller af als we samenwerken en elkaar aanvullen in plaats van alleen alles te moeten uitdokteren. 
 
 We hadden een gezonde competitieve sfeer die ons motiveerde om het beste uit onszelf te halen. We bespraken onze projecten zelfs tijdens het hardlopen of fietsen, wat leidde tot creatieve ideeën.
 
