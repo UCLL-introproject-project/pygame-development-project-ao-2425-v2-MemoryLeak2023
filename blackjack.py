@@ -1,7 +1,8 @@
 # black jack in python with pygame!
-import copy  # twee functies: shallow copy en deep copy. We gaan de DEEPcopy gebruiken.
+
 import random  # om willekeurig kaarten te trekken
 import pygame
+# Ik heb de module copy weg gelaten. Deze is niet nodig. Je kan perfect met lijsten werken want deze lijst bevat geen geneste lijsten of objecten. Alleen simpele strings.
 
 pygame.init()  # start alle benodigde modules van Pygame op: beeld, events, tijd
 pygame.mixer.init()
@@ -101,18 +102,20 @@ def draw_cards(player, dealer, reveal):
 def calculate_score(hand):
     hand_score = 0
     aces_count = hand.count('A')
-    for i in range(len(hand)):
-        for j in range(8):  # voor kaarten 2 t.e.m. 9
-            if hand[i] == cards[j]:
-                hand_score += int(hand[i])
-        if hand[i] in ['10', 'J', 'Q', 'K']:
+    
+    for card in hand:
+        if card in ['2', '3', '4', '5', '6', '7', '8', '9']:
+            hand_score += int(card)
+        elif card in ['10', 'J', 'Q', 'K']:
             hand_score += 10
-        elif hand[i] == 'A':
+        elif card == 'A':
             hand_score += 11
-    if hand_score > 21 and aces_count > 0:
-        for i in range(aces_count):
-            if hand_score > 21:
-                hand_score -= 10
+
+    # Corrigeer voor Azen indien nodig
+    while hand_score > 21 and aces_count > 0: # als de score in je hand groter is dan 21 en je hebt minstens 1 aas...
+        hand_score -= 10 # we geven de aas een waarde van 1 ipv 11
+        aces_count -= 1 # we trekken een aas af (anders blijft de while-loop doorlopen)
+
     return hand_score
 
 # Teken de knoppen en spelstatus op het scherm. Ik maak een klasse aan om de knoppen mét hover effect makkelijker aan te roepen om herhaling in mijn code te vermijden.
@@ -298,7 +301,7 @@ while run:
                 if buttons[0].is_clicked(event):
                     active = True
                     initial_deal = True
-                    game_deck = copy.deepcopy(decks * one_deck)
+                    game_deck = list(decks * one_deck)
                     my_hand = []
                     dealer_hand = []
                     outcome = 0
@@ -315,7 +318,7 @@ while run:
                     if buttons[2].is_clicked(event):
                         active = True
                         initial_deal = True
-                        game_deck = copy.deepcopy(decks * one_deck)
+                        game_deck = list(decks * one_deck)
                         my_hand = []
                         dealer_hand = []
                         outcome = 0
