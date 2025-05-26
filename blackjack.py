@@ -57,7 +57,7 @@ results = [ '',
     'Gelijkspel!']
 
 # Geluidjes voor intro, winst, verlies, gelijkspel
-intro_sound = pygame.mixer.Sound('project/pygame-development-project-ao-2425-v2-MemoryLeak2023/sounds/magic.mp3')
+intro_sound = pygame.mixer.Sound('project/pygame-development-project-ao-2425-v2-MemoryLeak2023/sounds/magic.wav')
 win_sound = pygame.mixer.Sound('project/pygame-development-project-ao-2425-v2-MemoryLeak2023/sounds/success.mp3')
 loss_sound = pygame.mixer.Sound('project/pygame-development-project-ao-2425-v2-MemoryLeak2023/sounds/scream.mp3')
 draw_sound = pygame.mixer.Sound('project/pygame-development-project-ao-2425-v2-MemoryLeak2023/sounds/giggle.mp3')
