@@ -2,6 +2,7 @@
 
 import random  # om willekeurig kaarten te trekken
 import pygame
+
 # Ik heb de module copy weg gelaten. Deze is niet nodig. Je kan perfect met lijsten werken want deze lijst bevat geen geneste lijsten of objecten. Alleen simpele strings.
 
 pygame.init()  # start alle benodigde modules van Pygame op: beeld, events, tijd

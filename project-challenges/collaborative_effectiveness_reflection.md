@@ -4,6 +4,9 @@
 
 Voor het Pygame Blackjack-project heb ik nauw samengewerkt met mijn medestudent Fernand Cools. We hebben eerder succesvol samengewerkt aan verschillende opdrachten en hebben een sterke professionele band opgebouwd. Onze samenwerking is gebaseerd op wederzijds respect, gedeelde motivatie en een gemeenschappelijk streven naar kwaliteit.
 
+Daarnaast heb ik ook nog feedback gevraagd aan een bevriende ICT'er uit Valencia. De communicatie verliep in het Spaans. Het is niet de eerste keer dat ik aan hem feedback vraag. Ik denk dat je veel kan leren van mensen die in de ICT werken.
+
+![feedback](feedback_sergio.png)
 ## 2. Projectoverzicht
 
 Ons doel was het ontwikkelen van een interactieve Blackjack-game met behulp van Pygame. We werkten zowel synchroon als asynchroon samen, voornamelijk online via GitHub en live. In het begin liep ik iets voor op Fernand, waardoor ik hem kon ondersteunen bij het opzetten van de Button-klasse om de code efficiënter te maken. Ik stelde ook voor om een hover-effect toe te voegen aan de knoppen en deelde mijn gebruikte lettertype. Daarnaast legde ik uit hoe geluidseffecten aan de code konden worden toegevoegd.
